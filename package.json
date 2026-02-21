@@ -1,0 +1,18 @@
+{
+  "name": "mods-mcp-v2",
+  "version": "0.1.0",
+  "description": "MCP server bridging LLMs to the Mods CE digital fabrication platform",
+  "type": "module",
+  "main": "src/server.js",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "setup": "git submodule update --init && npx playwright install"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "playwright": "^1.40.0"
+  }
+}
