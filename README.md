@@ -63,6 +63,7 @@ This starts:
 
 Options:
 - `--port 9090` — use a different HTTP port
+- `--branch fran` — start with a specific mods branch (fetches and checks out on startup)
 - `--headless` — run Chrome in headless mode
 
 ## Configuration
@@ -114,6 +115,8 @@ Add to `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS)
 | `create_program` | Build a custom program from modules and connections |
 | `save_program` | Save the current program state to a file |
 | `export_file` | Retrieve the most recently generated output file |
+| `update_mods` | Pull latest changes from remote for the current mods branch |
+| `switch_branch` | Switch the mods submodule to a different branch (or list available branches) |
 
 ## Example: PCB Milling Workflow
 
