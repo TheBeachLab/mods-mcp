@@ -157,6 +157,15 @@ mods-mcp/
 └── package.json
 ```
 
+## Documentation
+
+See [docs/architecture.md](docs/architecture.md) for C4 architecture diagrams including:
+- **System Context** — how the MCP server fits into the LLM + Mods + machine ecosystem
+- **Container Diagram** — the three main containers inside the server process
+- **Component Diagram** — detailed view of the four source modules
+- **Sequence Diagram** — complete data flow for a PCB milling workflow
+- **Internal Pipeline** — how data flows through Mods CE modules
+
 ## Claude Code Integration
 
 This repo includes a `/mods-workflow` slash command for Claude Code that teaches the LLM how to use the MCP tools correctly, including the on/off switch gating pattern, module disambiguation, and checkbox handling.
