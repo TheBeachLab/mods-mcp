@@ -4,9 +4,11 @@ An [MCP (Model Context Protocol)](https://modelcontextprotocol.io/) server that 
 
 Load a PCB design, configure milling parameters, generate toolpaths for a Roland SRM-20 — all through natural language via Claude, or any MCP-compatible client.
 
-![Mods CE PCB milling workflow controlled via MCP](docs/mods-pcb-workflow.png)
-
-The code in this repo was generated using Claude Code (Opus 4.6) and OpenSpec workflows.
+<p align="center">
+  <img src="docs/mods-pcb-workflow.png" alt="Mods CE PCB milling workflow controlled via MCP" />
+  <br>
+  <em>Sample test program to create a toolpath for PCB milling</em>
+</p>
 
 ## What it does
 
@@ -162,3 +164,7 @@ This repo includes a `/mods-workflow` slash command for Claude Code that teaches
 ## License
 
 The Mods CE submodule is maintained by the [Mods project](https://gitlab.fabcloud.org/pub/project/mods) at MIT's Center for Bits and Atoms. See the submodule for its license terms.
+
+---
+
+The code in this repo was generated using Claude Code (Opus 4.6) and OpenSpec workflows.
