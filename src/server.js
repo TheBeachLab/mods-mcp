@@ -137,6 +137,24 @@ mcpServer.tool(
   }
 );
 
+// --- Tool: launch_browser ---
+mcpServer.tool(
+  'launch_browser',
+  'Launch the Chromium browser to interact with Mods CE. Must be called before using tools that require the browser.',
+  {},
+  async () => {
+    if (browser.isLaunched()) {
+      return { content: [{ type: 'text', text: 'Browser is already running.' }] };
+    }
+    try {
+      await browser.launch(port, headless);
+      return { content: [{ type: 'text', text: `Browser launched (${headless ? 'headless' : 'headed'}) at http://localhost:${port}/` }] };
+    } catch (err) {
+      return { content: [{ type: 'text', text: `Browser launch failed: ${err.message}. Run "npx playwright install chromium" to install browsers.` }], isError: true };
+    }
+  }
+);
+
 // --- Tool: list_programs ---
 mcpServer.tool(
   'list_programs',
@@ -482,14 +500,8 @@ async function start() {
     console.error(`[mods-mcp-v2] HTTP server serving Mods CE at http://localhost:${port}/`);
   });
 
-  // Launch browser
-  try {
-    await browser.launch(port, headless);
-    console.error(`[mods-mcp-v2] Browser launched (${headless ? 'headless' : 'headed'})`);
-  } catch (err) {
-    console.error(`[mods-mcp-v2] Browser launch failed: ${err.message}`);
-    console.error('[mods-mcp-v2] Run "npx playwright install chromium" to install browsers');
-  }
+  // Browser is launched on demand via the launch_browser tool
+  console.error(`[mods-mcp-v2] Browser will launch on demand (use launch_browser tool)`);
 
   // Start MCP server on stdio
   const transport = new StdioServerTransport();
