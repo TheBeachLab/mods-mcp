@@ -25,7 +25,7 @@ export async function launch(port, headless = false) {
 
   await page.goto(`http://localhost:${port}/`, { waitUntil: 'load' });
   // Wait for mods.js to initialize (prog_load is set on window)
-  await page.waitForFunction(() => typeof window.prog_load === 'function', { timeout: 10000 });
+  await page.waitForFunction(() => typeof window.mods_prog_load === 'function', { timeout: 10000 });
 
   return page;
 }
@@ -34,7 +34,7 @@ export async function loadProgram(port, programPath) {
   if (!page) throw new Error('Browser not launched');
   const encodedPath = programPath.split('/').map(encodeURIComponent).join('/');
   await page.goto(`http://localhost:${port}/?program=${encodedPath}`, { waitUntil: 'load' });
-  await page.waitForFunction(() => typeof window.prog_load === 'function', { timeout: 10000 });
+  await page.waitForFunction(() => typeof window.mods_prog_load === 'function', { timeout: 10000 });
   // Wait for program modules to appear in DOM
   await page.waitForFunction(() => {
     const modules = document.getElementById('modules');
@@ -192,7 +192,7 @@ export async function injectProgram(programJson) {
   if (!page) throw new Error('Browser not launched');
   await page.evaluate((json) => {
     const prog = JSON.parse(json);
-    window.prog_load(prog);
+    window.mods_prog_load(prog);
   }, JSON.stringify(programJson));
   await page.waitForTimeout(1000);
 }
