@@ -199,8 +199,12 @@ export async function injectProgram(programJson) {
 
 export async function extractProgramState() {
   if (!page) throw new Error('Browser not launched');
-  // Replicate the logic from mods.js save_program() without the download
+  // Use mods.js build_v2_program() for reference-based v2 format
   return page.evaluate(() => {
+    if (typeof window.mods_build_v2_program === 'function') {
+      return window.mods_build_v2_program();
+    }
+    // Fallback to v1 extraction for older mods versions
     const prog = { modules: {}, links: [] };
     const modulesContainer = document.getElementById('modules');
     if (!modulesContainer) return null;
