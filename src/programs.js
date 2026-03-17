@@ -2,11 +2,14 @@
 
 import { readdir, readFile, stat, writeFile } from 'node:fs/promises';
 import { join, relative, dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const MODS_DIR = join(__dirname, '..', 'mods');
-const PROGRAMS_DIR = join(MODS_DIR, 'programs');
+let MODS_DIR;
+let PROGRAMS_DIR;
+
+export function init(modsDir) {
+  MODS_DIR = modsDir;
+  PROGRAMS_DIR = join(modsDir, 'programs');
+}
 
 async function scanDir(dir, base) {
   const entries = await readdir(dir, { withFileTypes: true });
