@@ -91,41 +91,44 @@ This pattern applies to programs under `programs/machines/` including Roland SRM
 ```bash
 # Clone the repository
 git clone <repo-url>
-cd mods-mcp-v2
-
-# Initialize the Mods CE submodule and install Playwright browsers
-npm run setup
+cd mods-mcp
 
 # Install dependencies
 npm install
 
-# Run the server
+# Install Playwright browsers
+npm run setup
+
+# Ensure you have a local mods CE checkout nearby (default: ../mods)
+# If not, clone it: git clone https://gitlab.fabcloud.org/pub/project/mods.git ../mods
+
+# Run the server (auto-detects ../mods)
 npm start
+
+# Or specify a custom path and branch
+node src/server.js --mods-path /path/to/mods --mods-branch fran
 ```
 
 ### Prerequisites
 
 - Node.js >= 18.0.0
-- Git (for submodule management)
+- A local [Mods CE](https://gitlab.fabcloud.org/pub/project/mods) checkout (default: `../mods` sibling directory)
 
 ### Project Structure
 
 ```
-mods-mcp-v2/
+mods-mcp/
 ├── src/
 │   ├── server.js      # MCP server entry point
 │   ├── browser.js     # Playwright browser automation
 │   ├── programs.js    # Program discovery and creation
 │   └── modules.js     # Module introspection
-├── mods/              # Mods CE git submodule
-│   ├── index.html     # Mods CE application
-│   ├── js/mods.js     # Mods CE core runtime
-│   ├── modules/       # 191 IIFE module files
-│   └── programs/      # 53 pre-built program JSONs
 ├── package.json
 ├── CLAUDE.md          # This file
 └── .gitignore
 ```
+
+The mods CE checkout is external (default: `../mods` sibling directory).
 
 ## Claude Desktop Configuration
 
@@ -136,14 +139,15 @@ Add to your Claude Desktop MCP settings (`~/Library/Application Support/Claude/c
   "mcpServers": {
     "mods": {
       "command": "node",
-      "args": ["/absolute/path/to/mods-mcp-v2/src/server.js"],
-      "env": {}
+      "args": ["/absolute/path/to/mods-mcp/src/server.js", "--mods-path", "/absolute/path/to/mods"]
     }
   }
 }
 ```
 
 Optional flags via args:
+- `"--mods-path", "/path/to/mods"` — path to local mods CE checkout (default: sibling `../mods`)
+- `"--mods-branch", "fran"` — validate mods repo is on this branch at startup (warn if not)
 - `"--port", "9090"` — use a different HTTP port (default: 8080)
 - `"--headless"` — run browser in headless mode (no visible window)
 
@@ -153,7 +157,7 @@ Example with all flags:
   "mcpServers": {
     "mods": {
       "command": "node",
-      "args": ["/absolute/path/to/mods-mcp-v2/src/server.js", "--port", "9090", "--headless"]
+      "args": ["/absolute/path/to/mods-mcp/src/server.js", "--mods-path", "/absolute/path/to/mods", "--mods-branch", "fran", "--port", "9090", "--headless"]
     }
   }
 }
