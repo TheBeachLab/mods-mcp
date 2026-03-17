@@ -1,4 +1,4 @@
-# mods-mcp
+# MOPS — Machines Obeying Prompt Suggestions
 
 MCP server bridging LLMs to the Mods CE digital fabrication platform.
 

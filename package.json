@@ -1,7 +1,7 @@
 {
-  "name": "mods-mcp",
+  "name": "mops",
   "version": "0.2.0",
-  "description": "MCP server bridging LLMs to the Mods CE digital fabrication platform",
+  "description": "MOPS — Machines Obeying Prompt Suggestions. MCP server bridging LLMs to the Mods CE digital fabrication platform.",
   "type": "module",
   "main": "src/server.js",
   "engines": {

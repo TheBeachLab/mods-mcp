@@ -166,7 +166,7 @@ async function parseModule(modulePath, includeSource) {
 let loadedProgram = null;
 
 // --- MCP Server ---
-const mcpServer = new McpServer({ name: 'mods-mcp', version: '0.2.0' });
+const mcpServer = new McpServer({ name: 'mops', version: '0.2.0' });
 
 async function findModule(moduleName, moduleId) {
   const state = await browser.getProgramState();
@@ -437,21 +437,21 @@ mcpServer.tool('save_program', 'Extract the current program state as v2 JSON', {
 async function start() {
   try {
     await getModulesManifest();
-    console.error(`[mods-mcp] Connected to ${modsUrl} (${modulesManifest.length} modules)`);
+    console.error(`[mops] Connected to ${modsUrl} (${modulesManifest.length} modules)`);
   } catch (err) {
-    console.error(`[mods-mcp] Error: Cannot reach mods at ${modsUrl}: ${err.message}`);
+    console.error(`[mops] Error: Cannot reach mods at ${modsUrl}: ${err.message}`);
     process.exit(1);
   }
 
-  console.error(`[mods-mcp] Browser will launch on demand (use launch_browser tool)`);
+  console.error(`[mops] Browser will launch on demand (use launch_browser tool)`);
 
   const transport = new StdioServerTransport();
   await mcpServer.connect(transport);
-  console.error('[mods-mcp] MCP server running on stdio');
+  console.error('[mops] MCP server running on stdio');
 }
 
 async function cleanup() {
-  console.error('[mods-mcp] Shutting down...');
+  console.error('[mops] Shutting down...');
   await browser.close();
   process.exit(0);
 }
@@ -460,6 +460,6 @@ process.on('SIGINT', cleanup);
 process.on('SIGTERM', cleanup);
 
 start().catch(err => {
-  console.error(`[mods-mcp] Fatal error: ${err.message}`);
+  console.error(`[mops] Fatal error: ${err.message}`);
   process.exit(1);
 });
