@@ -1,6 +1,6 @@
 {
-  "name": "mods-mcp-v2",
-  "version": "0.1.0",
+  "name": "mods-mcp",
+  "version": "0.2.0",
   "description": "MCP server bridging LLMs to the Mods CE digital fabrication platform",
   "type": "module",
   "main": "src/server.js",
