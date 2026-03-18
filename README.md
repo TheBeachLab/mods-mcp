@@ -43,8 +43,8 @@ Mods CE includes pre-built programs for:
 ### Installation
 
 ```bash
-git clone https://github.com/lahoramaker/mods-mcp.git
-cd mods-mcp
+git clone https://github.com/TheBeachLab/mops.git
+cd mops
 npm install
 npx playwright install chrome
 ```
