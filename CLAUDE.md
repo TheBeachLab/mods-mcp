@@ -51,7 +51,7 @@ This pattern applies to programs under `programs/machines/` including Roland SRM
 
 ## Architecture
 
-The MCP server connects to a remote mods CE deployment (default: `https://mods.beachlab.org`) via Playwright. No local HTTP server or filesystem scanning.
+The MCP server connects to a remote mods CE deployment (default: `https://modsproject.org`) via Playwright. No local HTTP server or filesystem scanning.
 
 ### Source Files
 
@@ -91,7 +91,7 @@ npm install
 # Install Playwright browsers
 npm run setup
 
-# Run the server (connects to mods.beachlab.org by default)
+# Run the server (connects to modsproject.org by default)
 npm start
 
 # Or specify a custom mods URL
@@ -131,7 +131,7 @@ Add to your Claude Desktop MCP settings (`~/Library/Application Support/Claude/c
 ```
 
 Optional flags via args:
-- `"--mods-url", "https://localhost:8081"` — connect to a different mods CE deployment (default: `https://mods.beachlab.org`)
+- `"--mods-url", "https://localhost:8081"` — connect to a different mods CE deployment (default: `https://modsproject.org`)
 - `"--headless"` — run browser in headless mode (no visible window)
 
 Example with all flags:

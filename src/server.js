@@ -10,7 +10,7 @@ import * as browser from './browser.js';
 
 // --- CLI ---
 const args = process.argv.slice(2);
-let modsUrl = 'https://mods.beachlab.org';
+let modsUrl = 'https://modsproject.org';
 let headless = false;
 for (let i = 0; i < args.length; i++) {
   if (args[i] === '--mods-url' && args[i + 1]) {
