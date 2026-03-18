@@ -108,6 +108,7 @@ Optional flags via args:
 | `update_profile` | Add/remove machines and preferences (stored at `~/.mops/profile.json`) |
 | `find_machine` | Match a task description to a machine in your profile + available Mods programs |
 | `launch_browser` | Launch browser, set up WebUSB/WebSerial device auto-selection from profile |
+| `list_devices` | Show USB/serial devices discovered during device picker prompts |
 | `list_programs` | List available programs by category |
 | `list_modules` | List available modules by category |
 | `get_module_info` | Parse a module's inputs, outputs, and types |

@@ -9,6 +9,8 @@ let page = null;
 let downloads = [];
 let cdpSession = null;
 let deviceNameFilters = [];
+let discoveredDevices = [];
+let machineNames = [];
 
 export async function launch(modsUrl, headless = false) {
   browserInstance = await chromium.launch({ headless, channel: 'chrome' });
@@ -32,17 +34,36 @@ export async function launch(modsUrl, headless = false) {
   cdpSession.on('DeviceAccess.deviceRequestPrompted', async (event) => {
     const { id, devices } = event;
     console.error(`[mops] Device prompt: ${devices.map(d => d.name).join(', ')}`);
-    const match = devices.find(d =>
+
+    // Store discovered devices
+    for (const d of devices) {
+      if (!discoveredDevices.some(dd => dd.name === d.name)) {
+        discoveredDevices.push({ name: d.name, discoveredAt: Date.now() });
+      }
+    }
+
+    // 1. Try exact deviceName filters first
+    let match = devices.find(d =>
       deviceNameFilters.some(filter => d.name.toLowerCase().includes(filter.toLowerCase()))
     );
+
+    // 2. Fuzzy match against profile machine names (e.g., "Roland GX-24" matches "Roland DG GX-24")
+    if (!match && machineNames.length > 0) {
+      match = devices.find(d => {
+        const dLower = d.name.toLowerCase();
+        return machineNames.some(mName => {
+          const keywords = mName.toLowerCase().split(/[\s-]+/).filter(w => w.length > 2);
+          const matched = keywords.filter(kw => dLower.includes(kw));
+          return matched.length >= 2; // at least 2 keywords must match
+        });
+      });
+    }
+
     if (match) {
       console.error(`[mops] Auto-selecting device: ${match.name}`);
       await cdpSession.send('DeviceAccess.selectPrompt', { id, deviceId: match.id });
-    } else if (deviceNameFilters.length > 0) {
-      console.error(`[mops] No matching device for filters: ${deviceNameFilters.join(', ')}`);
-      await cdpSession.send('DeviceAccess.cancelPrompt', { id });
     } else {
-      console.error(`[mops] No device filters set, canceling prompt`);
+      console.error(`[mops] No matching device found, canceling prompt. Discovered: ${devices.map(d => d.name).join(', ')}`);
       await cdpSession.send('DeviceAccess.cancelPrompt', { id });
     }
   });
@@ -53,8 +74,13 @@ export async function launch(modsUrl, headless = false) {
   return page;
 }
 
-export function setDeviceFilters(filters) {
+export function setDeviceFilters(filters, names) {
   deviceNameFilters = filters;
+  machineNames = names;
+}
+
+export function getDiscoveredDevices() {
+  return discoveredDevices;
 }
 
 export async function loadProgram(modsUrl, programPath, srcUrl) {

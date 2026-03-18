@@ -380,17 +380,29 @@ mcpServer.tool('launch_browser',
       const filters = profile.machines
         .filter(m => m.deviceName)
         .map(m => m.deviceName);
-      browser.setDeviceFilters(filters);
+      const names = profile.machines.map(m => m.name);
+      browser.setDeviceFilters(filters, names);
 
       await browser.launch(modsUrl, headless);
       const msg = `Browser launched (${headless ? 'headless' : 'headed'}) at ${modsUrl}`;
-      const deviceMsg = filters.length > 0
-        ? `. WebUSB/WebSerial auto-select enabled for: ${filters.join(', ')}`
-        : '. No device names in profile — WebUSB/WebSerial prompts will be canceled. Add deviceName to machines with update_profile to enable auto-selection.';
+      const deviceMsg = `. Device auto-select enabled for ${names.length} machine(s): ${names.join(', ')}`;
       return { content: [{ type: 'text', text: msg + deviceMsg }] };
     } catch (err) {
       return { content: [{ type: 'text', text: `Browser launch failed: ${err.message}. Run "npx playwright install chromium" to install browsers.` }], isError: true };
     }
+  }
+);
+
+mcpServer.tool('list_devices',
+  'List USB/serial devices discovered during WebUSB/WebSerial prompts. Devices appear here after a workflow triggers a device picker.',
+  {},
+  async () => {
+    if (!browser.isLaunched()) return { content: [{ type: 'text', text: 'Error: Browser not launched.' }], isError: true };
+    const devices = browser.getDiscoveredDevices();
+    if (devices.length === 0) {
+      return { content: [{ type: 'text', text: 'No devices discovered yet. Devices are detected when a workflow triggers a WebUSB/WebSerial prompt (e.g., sending output to a machine).' }] };
+    }
+    return { content: [{ type: 'text', text: JSON.stringify(devices, null, 2) }] };
   }
 );
 
